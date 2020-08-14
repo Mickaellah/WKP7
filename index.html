@@ -25,12 +25,12 @@
 				<form>
 					<div>
 						<label for="title">Book title</label>
-						<input type="text" id="title" value="Title">
+						<input type="text" id="title" name="title" value="Title">
 					</div>
 	
 					<div>
 						<label for="author">Book author</label>
-						<input type="text" id="author" value="Author">
+						<input type="text" id="author" name="author" value="Author">
 					</div>
 	
 					<div>
@@ -48,12 +48,12 @@
 	
 					<div>
 						<label for="page">Book pages</label>
-						<input type="text" id="page" value="Number of pages">
+						<input type="text" id="page" name="pages" value="Number of pages">
 					</div>
 	
 					<div>
 						<label for="status">Status</label>
-						<select name="action" id="status">
+						<select name="status" id="status">
 							<option value="read">Read</option>
 							<option value="unread">Unread</option>
 						</select>
@@ -65,14 +65,17 @@
 				</form>
 			</div>
 
-			<table>
-				<tr>
+			<table class="container">
+				<tr class="table_row1">
 					<th>Title</th>
-					<th>Athour</th>
+					<th>Author</th>
 					<th>Genre</th>
 					<th>Pages</th>
 					<th>Read</th>
 				</tr>
+				<tbody class="table_row2">
+					
+				</tbody>
 			</table>
 		</main>
 		<script src="script.js"></script>
