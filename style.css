@@ -76,29 +76,14 @@ select {
 
 table {
     margin-block-start: 32px;
-}
-
-.table_row1 {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: aliceblue;
-    padding: 32px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    padding-inline-end: 112px;
+    width: 100%;
 }
 
 th {
-    margin-inline-start: 140px;
+    border: 1px solid black;
 }
 
-th:nth-of-type(1) {
-    margin-inline-start: 0;
-}
-
-.table_row2 {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+td {
+    border: 1px solid black;
+    margin-inline-start: 48px;
 }

@@ -1,7 +1,7 @@
 // A big array that contains some objects that I need to start this project.
 const books = [
     {
-        title: 'Harry Potter and the Philosopher Stone',
+        title: 'Harry Potter',
         author: 'JK Rowling',
         genre: 'Fantasy',
         pages: 323,
@@ -9,7 +9,7 @@ const books = [
     },
 
     {
-        title: 'Clean Code: A Handbook of Software Engineering',
+        title: 'Clean Code',
         author: 'Robert C. Martin',
         genre: 'IT',
         pages: 434,
@@ -38,16 +38,16 @@ console.log(books);
 
 
 // Grab the elements that might be needed in this project.
+const form = document.querySelector('form');
 const table = document.querySelector('.container');
-const tableRow = document.querySelector('.table_row2');
+const tableBody = document.querySelector('.tbody');
 const addBttn = document.querySelector('.add_button');
 
 // Generate the books objects into html elements.
 function loadBookList() {
-    // let listOfBooks = [...books];
     const html = books.map(book => 
         `
-        <tr>
+        <tr class="table-row">
             <td>${book.title}</td>
             <td>${book.author}</td>
             <td>${book.genre}</td>
@@ -58,15 +58,14 @@ function loadBookList() {
             </td>
         </tr>
         `).join(' ');
-    tableRow.insertAdjacentHTML("beforeend", html);
+    tableBody.insertAdjacentHTML("beforeend", html);
 };
-console.log(loadBookList);
 loadBookList();
 
 
 // A function for the handling the add button in the form.
 const handleClick = (event) => {
-    console.log(event.target);
+    // console.log(event.target);
     if (event.target.matches('form')) {
         const form = event.target;
         const title = form.title.value;
@@ -87,14 +86,20 @@ const handleClick = (event) => {
             </td>
         </tr>
         `;
-
-        tableRow.innerHTML = html;
+        tableBody.innerHTML = html;
     }
-
+    form.reset();
 }
 
 
 // An event listener for the add button to push the form in the table under.
 addBttn.addEventListener('click', handleClick);
+
+
+window.addEventListener('click', (e) => {
+    const deleteBtn = e.target.matches('button.delete_button');
+    console.log(deleteBtn);
+
+})
 
 

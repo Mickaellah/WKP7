@@ -120,13 +120,13 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 })({"script.js":[function(require,module,exports) {
 // A big array that contains some objects that I need to start this project.
 var books = [{
-  title: 'Harry Potter and the Philosopher Stone',
+  title: 'Harry Potter',
   author: 'JK Rowling',
   genre: 'Fantasy',
   pages: 323,
   status: true
 }, {
-  title: 'Clean Code: A Handbook of Software Engineering',
+  title: 'Clean Code',
   author: 'Robert C. Martin',
   genre: 'IT',
   pages: 434,
@@ -146,39 +146,43 @@ var books = [{
 }];
 console.log(books); // Grab the elements that might be needed in this project.
 
+var form = document.querySelector('form');
 var table = document.querySelector('.container');
-var tableRow = document.querySelector('.table_row2');
+var tableBody = document.querySelector('.tbody');
 var addBttn = document.querySelector('.add_button'); // Generate the books objects into html elements.
 
 function loadBookList() {
-  // let listOfBooks = [...books];
   var html = books.map(function (book) {
-    return "\n        <tr>\n            <td>".concat(book.title, "</td>\n            <td>").concat(book.author, "</td>\n            <td>").concat(book.genre, "</td>\n            <td>").concat(book.pages, "</td>\n            <td>").concat(book.status, "</td>\n            <td>\n                <button class=\"delete_button\" type=\"button\">Delete</button>\n            </td>\n        </tr>\n        ");
+    return "\n        <tr class=\"table-row\">\n            <td>".concat(book.title, "</td>\n            <td>").concat(book.author, "</td>\n            <td>").concat(book.genre, "</td>\n            <td>").concat(book.pages, "</td>\n            <td>").concat(book.status, "</td>\n            <td>\n                <button class=\"delete_button\" type=\"button\">Delete</button>\n            </td>\n        </tr>\n        ");
   }).join(' ');
-  tableRow.insertAdjacentHTML("beforeend", html);
+  tableBody.insertAdjacentHTML("beforeend", html);
 }
 
 ;
-console.log(loadBookList);
 loadBookList(); // A function for the handling the add button in the form.
 
 var handleClick = function handleClick(event) {
-  console.log(event.target);
-
+  // console.log(event.target);
   if (event.target.matches('form')) {
-    var form = event.target;
-    var title = form.title.value;
-    var author = form.author.value;
-    var genre = form.genre.value;
-    var pages = form.pages.value;
-    var status = form.status.value;
+    var _form = event.target;
+    var title = _form.title.value;
+    var author = _form.author.value;
+    var genre = _form.genre.value;
+    var pages = _form.pages.value;
+    var status = _form.status.value;
     var html = "\n        <tr>\n            <td>".concat(title, "</td>\n            <td>").concat(author, "</td>\n            <td>").concat(genre, "</td>\n            <td>").concat(pages, "</td>\n            <td>").concat(status, "</td>\n            <td>\n                <button class=\"delete_button\" type=\"button\">Delete</button>\n            </td>\n        </tr>\n        ");
-    tableRow.innerHTML = html;
+    tableBody.innerHTML = html;
   }
+
+  form.reset();
 }; // An event listener for the add button to push the form in the table under.
 
 
 addBttn.addEventListener('click', handleClick);
+window.addEventListener('click', function (e) {
+  var deleteBtn = e.target.matches('button.delete_button');
+  console.log(deleteBtn);
+});
 },{}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -207,7 +211,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56752" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65116" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
