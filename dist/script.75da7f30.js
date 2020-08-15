@@ -165,7 +165,7 @@ var addBttn = document.querySelector('.add_button'); // Generate the books objec
 
 var loadBookList = function loadBookList() {
   var html = books.map(function (book) {
-    return "\n        <tr class=\"table-row\">\n            <td>".concat(book.title, "</td>\n            <td>").concat(book.author, "</td>\n            <td>").concat(book.genre, "</td>\n            <td>").concat(book.pages, "</td>\n            <td><input type=\"checkbox\" class=\"checkbox\"></td>\n            <td>\n                <button class=\"delete-button\">\n                    <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                    <path d=\"M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z\" fill=\"#747474\"/>\n                    </svg>\n                </button>\n            </td>\n        </tr>\n        ");
+    return "\n        <tr class=\"table-row\">\n            <td>".concat(book.title, "</td>\n            <td>").concat(book.author, "</td>\n            <td>").concat(book.genre, "</td>\n            <td>").concat(book.pages, "</td>\n            <td><input type=\"checkbox\" ").concat(book.status === true ? 'checked' : " ", "></td>\n            <td>\n                <button class=\"delete-button\">\n                    <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                    <path d=\"M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z\" fill=\"#747474\"/>\n                    </svg>\n                </button>\n            </td>\n        </tr>\n        ");
   }).join(' ');
   tableBody.insertAdjacentHTML("beforeend", html);
 };
@@ -194,7 +194,7 @@ var handleSubmit = function handleSubmit(event) {
   items.push(item);
   tableBody.dispatchEvent(new CustomEvent('addItem'));
   var html = items.map(function (item) {
-    return "\n    <tr class=\"table-row\">\n        <td>".concat(item.title, "</td>\n        <td>").concat(item.author, "</td>\n        <td>").concat(item.genre, "</td>\n        <td>").concat(item.pages, "</td>\n        <td><input type=\"checkbox\" class=\"checkbox\"></td>\n        <td>\n            <button class=\"delete-button\">\n                <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                <path d=\"M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z\" fill=\"#747474\"/>\n                </svg>\n            </button>\n        </td>\n    </tr>\n    ");
+    return "\n    <tr class=\"table-row\">\n        <td>".concat(item.title, "</td>\n        <td>").concat(item.author, "</td>\n        <td>").concat(item.genre, "</td>\n        <td>").concat(item.pages, "</td>\n        <td><input type=\"checkbox\" ").concat(item.status === true ? 'checked' : " ", "></td>\n        <td>\n            <button class=\"delete-button\">\n                <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                <path d=\"M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z\" fill=\"#747474\"/>\n                </svg>\n            </button>\n        </td>\n    </tr>\n    ");
   }).join('');
   tableBody.insertAdjacentHTML("beforeend", html);
   form.reset();
@@ -202,44 +202,30 @@ var handleSubmit = function handleSubmit(event) {
 
 
 var mirroToLocalStorage = function mirroToLocalStorage() {
+  console.log('mirror the local storage');
   localStorage.setItem('items', JSON.stringify(items));
 }; // A fnction to convert back the string that we've just convert into an object.
 
 
 var restoreFromLocalStorage = function restoreFromLocalStorage() {
+  console.log('Restore items to local storage');
   var listsOfItems = JSON.parse(localStorage.getItem('items'));
 
   if (listsOfItems) {
-    items.push.apply(items, _toConsumableArray(listsOfItems));
+    books.push.apply(books, _toConsumableArray(listsOfItems));
   }
 
-  tableBody.dispatchEvent(new CustomEvent('addItem'));
-};
-
-tableBody.addEventListener('addItem', mirroToLocalStorage);
-
-var markAsRead = function markAsRead(id) {
-  var itemRef = items.find(function (item) {
-    return item.id === id;
-  });
-  console.log(itemRef);
   tableBody.dispatchEvent(new CustomEvent('addItem'));
 };
 /*****======= Event listeners =======******/
 
 
 form.addEventListener('submit', handleSubmit);
+tableBody.addEventListener('addItem', mirroToLocalStorage);
 tableBody.dispatchEvent(new CustomEvent('addItem'));
 window.addEventListener('click', function (e) {
   var deleteBtn = e.target.matches('button.delete-button');
   console.log(deleteBtn); // deleteBtn.closest('.table-row').remove();
-});
-window.addEventListener('click', function (e) {
-  var id = Number(e.target.value);
-
-  if (e.target.matches('input[type="checkbox"]')) {
-    markAsRead(id);
-  }
 });
 restoreFromLocalStorage();
 },{}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {

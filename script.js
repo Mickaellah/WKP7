@@ -52,7 +52,7 @@ const loadBookList = () => {
             <td>${book.author}</td>
             <td>${book.genre}</td>
             <td>${book.pages}</td>
-            <td><input type="checkbox" class="checkbox"></td>
+            <td><input type="checkbox" ${book.status === true ? 'checked' : " "}></td>
             <td>
                 <button class="delete-button">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -98,7 +98,7 @@ const handleSubmit = (event) => {
         <td>${item.author}</td>
         <td>${item.genre}</td>
         <td>${item.pages}</td>
-        <td><input type="checkbox" class="checkbox"></td>
+        <td><input type="checkbox" ${item.status === true ? 'checked' : " "}></td>
         <td>
             <button class="delete-button">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -115,45 +115,34 @@ const handleSubmit = (event) => {
 
 // A function to convert an object to a string for the local storage to store it.
 const mirroToLocalStorage = () => {
+    console.log('mirror the local storage');
     localStorage.setItem('items', JSON.stringify(items));
 };
 
 // A fnction to convert back the string that we've just convert into an object.
 const restoreFromLocalStorage = () => {
+    console.log('Restore items to local storage');
     const listsOfItems = JSON.parse(localStorage.getItem('items'));
     if (listsOfItems) {
-        items.push(...listsOfItems);
+        books.push(...listsOfItems);
     }
     tableBody.dispatchEvent(new CustomEvent('addItem'));
 };
 
-tableBody.addEventListener('addItem', mirroToLocalStorage);
 
-
-
-const markAsRead = id => {
-    const itemRef = items.find(item => item.id === id);
-    console.log(itemRef);
-    tableBody.dispatchEvent(new CustomEvent('addItem'));
-};
 
 
 /*****======= Event listeners =======******/
 form.addEventListener('submit', handleSubmit);
+tableBody.addEventListener('addItem', mirroToLocalStorage);
 tableBody.dispatchEvent(new CustomEvent('addItem'));
+
 
 
 window.addEventListener('click', e => {
     const deleteBtn = e.target.matches('button.delete-button');
     console.log(deleteBtn);
     // deleteBtn.closest('.table-row').remove();
-});
-
-window.addEventListener('click', (e) => {
-    const id = Number(e.target.value);
-    if (e.target.matches('input[type="checkbox"]')) {
-        markAsRead(id);
-    }
 });
 
 restoreFromLocalStorage();
