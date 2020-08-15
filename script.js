@@ -131,7 +131,6 @@ const restoreFromLocalStorage = () => {
 
 
 
-
 /*****======= Event listeners =======******/
 form.addEventListener('submit', handleSubmit);
 tableBody.addEventListener('addItem', mirroToLocalStorage);
