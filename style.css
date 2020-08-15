@@ -7,10 +7,21 @@ body {
 
 }
 
+header {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
 h1 {
     font-size: 48px;
     font-weight: bold;
     margin-block-start: 88px;
+}
+
+header > p {
+    margin: 0;
+    width: 100vw;
+    margin-inline-start: -10rem;
 }
 
 h2 {

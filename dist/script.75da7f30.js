@@ -118,6 +118,18 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"script.js":[function(require,module,exports) {
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 // A big array that contains some objects that I need to start this project.
 var books = [{
   title: 'Harry Potter',
@@ -151,17 +163,16 @@ var table = document.querySelector('.container');
 var tableBody = document.querySelector('.tbody');
 var addBttn = document.querySelector('.add_button'); // Generate the books objects into html elements.
 
-function loadBookList() {
+var loadBookList = function loadBookList() {
   var html = books.map(function (book) {
     return "\n        <tr class=\"table-row\">\n            <td>".concat(book.title, "</td>\n            <td>").concat(book.author, "</td>\n            <td>").concat(book.genre, "</td>\n            <td>").concat(book.pages, "</td>\n            <td><input type=\"checkbox\" class=\"checkbox\"></td>\n            <td>\n                <button class=\"delete-button\">\n                    <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                    <path d=\"M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z\" fill=\"#747474\"/>\n                    </svg>\n                </button>\n            </td>\n        </tr>\n        ");
   }).join(' ');
   tableBody.insertAdjacentHTML("beforeend", html);
-}
+};
 
-;
-loadBookList(); // A function for the handling the add button in the form.
+loadBookList(); // An empty array to hold the state.
 
-var items = [];
+var items = []; // A function for the handling the add button in the form.
 
 var handleSubmit = function handleSubmit(event) {
   event.preventDefault();
@@ -177,53 +188,60 @@ var handleSubmit = function handleSubmit(event) {
     author: author,
     genre: genre,
     pages: pages,
-    status: status
+    status: status,
+    id: Date.now()
   };
   items.push(item);
   tableBody.dispatchEvent(new CustomEvent('addItem'));
   var html = items.map(function (item) {
-    return "\n        <tr>\n            <td>".concat(item.title, "</td>\n            <td>").concat(item.author, "</td>\n            <td>").concat(item.genre, "</td>\n            <td>").concat(item.pages, "</td>\n            <td><input type=\"checkbox\" class=\"checkbox\"></td>\n            <td>\n                <button class=\"delete-button\">\n                    <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                    <path d=\"M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z\" fill=\"#747474\"/>\n                    </svg>\n                </button>\n            </td>\n        </tr>\n        ");
-  });
+    return "\n    <tr class=\"table-row\">\n        <td>".concat(item.title, "</td>\n        <td>").concat(item.author, "</td>\n        <td>").concat(item.genre, "</td>\n        <td>").concat(item.pages, "</td>\n        <td><input type=\"checkbox\" class=\"checkbox\"></td>\n        <td>\n            <button class=\"delete-button\">\n                <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                <path d=\"M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z\" fill=\"#747474\"/>\n                </svg>\n            </button>\n        </td>\n    </tr>\n    ");
+  }).join('');
   tableBody.insertAdjacentHTML("beforeend", html);
   form.reset();
-}; // An event listener for the add button to push the form in the table under.
+}; // A function to convert an object to a string for the local storage to store it.
+
+
+var mirroToLocalStorage = function mirroToLocalStorage() {
+  localStorage.setItem('items', JSON.stringify(items));
+}; // A fnction to convert back the string that we've just convert into an object.
+
+
+var restoreFromLocalStorage = function restoreFromLocalStorage() {
+  var listsOfItems = JSON.parse(localStorage.getItem('items'));
+
+  if (listsOfItems) {
+    items.push.apply(items, _toConsumableArray(listsOfItems));
+  }
+
+  tableBody.dispatchEvent(new CustomEvent('addItem'));
+};
+
+tableBody.addEventListener('addItem', mirroToLocalStorage);
+
+var markAsRead = function markAsRead(id) {
+  var itemRef = items.find(function (item) {
+    return item.id === id;
+  });
+  console.log(itemRef);
+  tableBody.dispatchEvent(new CustomEvent('addItem'));
+};
+/*****======= Event listeners =======******/
 
 
 form.addEventListener('submit', handleSubmit);
-tableBody.dispatchEvent(new CustomEvent('addItem')); // window.addEventListener('click', (e) => {
-//     const deleteBtn = e.target.matches('button.delete_button');
-//     console.log(deleteBtn);
-// })
-// let items = [];
-// const handleSubmit = (e) => {
-//     e.preventDefault();
-//     const name = e.currentTarget.item.value;
-//     const item = {
-//         name,
-//         id: Date.now(),
-//         read: false
-//     };
-//     items.push(item);
-//     tableBody.dispatchEvent(new CustomEvent('addItem'));
-// };
-// const deleteItems = id => {
-//     items = items.filter(item => item.id !== id);
-//     tableBody.dispatchEvent(new customElements('addItem'));
-// };
-// const markAsRead = id => {
-//     const itemRef = items.find(item => item.id === id);
-//     itemRef.read = !itemRef.read;
-//     tableBody.dispatchEvent(new customElements('addItem'));
-// };
-// tableBody.addEventListener('click', function(e) {
-//     const id = Number(e.target.value);
-//     if (e.target.matches('button.delete-button')) {
-//         deleteItems(id);
-//     }
-//     if (e.target.matches('input[type="checkbox"')) {
-//         markAsRead(id);
-//     }
-// });
+tableBody.dispatchEvent(new CustomEvent('addItem'));
+window.addEventListener('click', function (e) {
+  var deleteBtn = e.target.matches('button.delete-button');
+  console.log(deleteBtn); // deleteBtn.closest('.table-row').remove();
+});
+window.addEventListener('click', function (e) {
+  var id = Number(e.target.value);
+
+  if (e.target.matches('input[type="checkbox"]')) {
+    markAsRead(id);
+  }
+});
+restoreFromLocalStorage();
 },{}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
