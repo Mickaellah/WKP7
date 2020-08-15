@@ -52,9 +52,13 @@ function loadBookList() {
             <td>${book.author}</td>
             <td>${book.genre}</td>
             <td>${book.pages}</td>
-            <td>${book.status}</td>
+            <td><input type="checkbox" class="checkbox"></td>
             <td>
-                <button class="delete_button" type="button">Delete</button>
+                <button class="delete-button">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z" fill="#747474"/>
+                    </svg>
+                </button>
             </td>
         </tr>
         `).join(' ');
@@ -64,42 +68,91 @@ loadBookList();
 
 
 // A function for the handling the add button in the form.
-const handleClick = (event) => {
-    // console.log(event.target);
-    if (event.target.matches('form')) {
+const items = [];
+const handleSubmit = (event) => {
+        event.preventDefault();
         const form = event.target;
         const title = form.title.value;
         const author = form.author.value;
         const genre = form.genre.value;
         const pages = form.pages.value;
         const status = form.status.value;
+        console.log(author);
 
-        const html = `
+        const item = {
+            title: title,
+            author: author,
+            genre: genre,
+            pages: pages,
+            status: status,
+        };
+        items.push(item);
+        tableBody.dispatchEvent(new CustomEvent('addItem'));
+
+        const html = items.map(item => `
         <tr>
-            <td>${title}</td>
-            <td>${author}</td>
-            <td>${genre}</td>
-            <td>${pages}</td>
-            <td>${status}</td>
+            <td>${item.title}</td>
+            <td>${item.author}</td>
+            <td>${item.genre}</td>
+            <td>${item.pages}</td>
+            <td><input type="checkbox" class="checkbox"></td>
             <td>
-                <button class="delete_button" type="button">Delete</button>
+                <button class="delete-button">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z" fill="#747474"/>
+                    </svg>
+                </button>
             </td>
         </tr>
-        `;
-        tableBody.innerHTML = html;
-    }
-    form.reset();
-}
+        `);
+        tableBody.insertAdjacentHTML("beforeend", html);
+        form.reset();
+    };
 
 
 // An event listener for the add button to push the form in the table under.
-addBttn.addEventListener('click', handleClick);
+form.addEventListener('submit', handleSubmit);
+tableBody.dispatchEvent(new CustomEvent('addItem'));
 
 
-window.addEventListener('click', (e) => {
-    const deleteBtn = e.target.matches('button.delete_button');
-    console.log(deleteBtn);
+// window.addEventListener('click', (e) => {
+//     const deleteBtn = e.target.matches('button.delete_button');
+//     console.log(deleteBtn);
 
-})
+// })
 
+// let items = [];
+
+// const handleSubmit = (e) => {
+//     e.preventDefault();
+//     const name = e.currentTarget.item.value;
+//     const item = {
+//         name,
+//         id: Date.now(),
+//         read: false
+//     };
+//     items.push(item);
+//     tableBody.dispatchEvent(new CustomEvent('addItem'));
+// };
+
+// const deleteItems = id => {
+//     items = items.filter(item => item.id !== id);
+//     tableBody.dispatchEvent(new customElements('addItem'));
+// };
+
+// const markAsRead = id => {
+//     const itemRef = items.find(item => item.id === id);
+//     itemRef.read = !itemRef.read;
+//     tableBody.dispatchEvent(new customElements('addItem'));
+// };
+
+// tableBody.addEventListener('click', function(e) {
+//     const id = Number(e.target.value);
+//     if (e.target.matches('button.delete-button')) {
+//         deleteItems(id);
+//     }
+//     if (e.target.matches('input[type="checkbox"')) {
+//         markAsRead(id);
+//     }
+// });
 

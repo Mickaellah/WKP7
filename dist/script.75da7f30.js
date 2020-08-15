@@ -153,7 +153,7 @@ var addBttn = document.querySelector('.add_button'); // Generate the books objec
 
 function loadBookList() {
   var html = books.map(function (book) {
-    return "\n        <tr class=\"table-row\">\n            <td>".concat(book.title, "</td>\n            <td>").concat(book.author, "</td>\n            <td>").concat(book.genre, "</td>\n            <td>").concat(book.pages, "</td>\n            <td>").concat(book.status, "</td>\n            <td>\n                <button class=\"delete_button\" type=\"button\">Delete</button>\n            </td>\n        </tr>\n        ");
+    return "\n        <tr class=\"table-row\">\n            <td>".concat(book.title, "</td>\n            <td>").concat(book.author, "</td>\n            <td>").concat(book.genre, "</td>\n            <td>").concat(book.pages, "</td>\n            <td><input type=\"checkbox\" class=\"checkbox\"></td>\n            <td>\n                <button class=\"delete-button\">\n                    <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                    <path d=\"M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z\" fill=\"#747474\"/>\n                    </svg>\n                </button>\n            </td>\n        </tr>\n        ");
   }).join(' ');
   tableBody.insertAdjacentHTML("beforeend", html);
 }
@@ -161,28 +161,69 @@ function loadBookList() {
 ;
 loadBookList(); // A function for the handling the add button in the form.
 
-var handleClick = function handleClick(event) {
-  // console.log(event.target);
-  if (event.target.matches('form')) {
-    var _form = event.target;
-    var title = _form.title.value;
-    var author = _form.author.value;
-    var genre = _form.genre.value;
-    var pages = _form.pages.value;
-    var status = _form.status.value;
-    var html = "\n        <tr>\n            <td>".concat(title, "</td>\n            <td>").concat(author, "</td>\n            <td>").concat(genre, "</td>\n            <td>").concat(pages, "</td>\n            <td>").concat(status, "</td>\n            <td>\n                <button class=\"delete_button\" type=\"button\">Delete</button>\n            </td>\n        </tr>\n        ");
-    tableBody.innerHTML = html;
-  }
+var items = [];
 
+var handleSubmit = function handleSubmit(event) {
+  event.preventDefault();
+  var form = event.target;
+  var title = form.title.value;
+  var author = form.author.value;
+  var genre = form.genre.value;
+  var pages = form.pages.value;
+  var status = form.status.value;
+  console.log(author);
+  var item = {
+    title: title,
+    author: author,
+    genre: genre,
+    pages: pages,
+    status: status
+  };
+  items.push(item);
+  tableBody.dispatchEvent(new CustomEvent('addItem'));
+  var html = items.map(function (item) {
+    return "\n        <tr>\n            <td>".concat(item.title, "</td>\n            <td>").concat(item.author, "</td>\n            <td>").concat(item.genre, "</td>\n            <td>").concat(item.pages, "</td>\n            <td><input type=\"checkbox\" class=\"checkbox\"></td>\n            <td>\n                <button class=\"delete-button\">\n                    <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                    <path d=\"M15.5 4L14.5 3H9.5L8.5 4H5V6H19V4H15.5ZM6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM8 9H16V19H8V9Z\" fill=\"#747474\"/>\n                    </svg>\n                </button>\n            </td>\n        </tr>\n        ");
+  });
+  tableBody.insertAdjacentHTML("beforeend", html);
   form.reset();
 }; // An event listener for the add button to push the form in the table under.
 
 
-addBttn.addEventListener('click', handleClick);
-window.addEventListener('click', function (e) {
-  var deleteBtn = e.target.matches('button.delete_button');
-  console.log(deleteBtn);
-});
+form.addEventListener('submit', handleSubmit);
+tableBody.dispatchEvent(new CustomEvent('addItem')); // window.addEventListener('click', (e) => {
+//     const deleteBtn = e.target.matches('button.delete_button');
+//     console.log(deleteBtn);
+// })
+// let items = [];
+// const handleSubmit = (e) => {
+//     e.preventDefault();
+//     const name = e.currentTarget.item.value;
+//     const item = {
+//         name,
+//         id: Date.now(),
+//         read: false
+//     };
+//     items.push(item);
+//     tableBody.dispatchEvent(new CustomEvent('addItem'));
+// };
+// const deleteItems = id => {
+//     items = items.filter(item => item.id !== id);
+//     tableBody.dispatchEvent(new customElements('addItem'));
+// };
+// const markAsRead = id => {
+//     const itemRef = items.find(item => item.id === id);
+//     itemRef.read = !itemRef.read;
+//     tableBody.dispatchEvent(new customElements('addItem'));
+// };
+// tableBody.addEventListener('click', function(e) {
+//     const id = Number(e.target.value);
+//     if (e.target.matches('button.delete-button')) {
+//         deleteItems(id);
+//     }
+//     if (e.target.matches('input[type="checkbox"')) {
+//         markAsRead(id);
+//     }
+// });
 },{}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -211,7 +252,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65116" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53324" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
